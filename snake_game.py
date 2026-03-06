@@ -9,7 +9,7 @@ class SnakeGame:
     def __init__(self):
         self.window = tk.Tk()
         self.window.title("贪吃蛇 🐍")
-        self.window.geometry("400x420")
+        self.window.geometry("400x480")  # 增加高度，确保按钮可见
         self.window.resizable(False, False)
         
         # 游戏区域大小
@@ -42,10 +42,19 @@ class SnakeGame:
         self.draw_snake()
         self.draw_food()
         
-        # 开始按钮
-        self.start_btn = tk.Button(self.window, text="开始游戏", command=self.start_game, 
-                                   font=("Arial", 12), bg="#4CAF50", fg="white", width=15)
-        self.start_btn.pack(pady=5)
+        # 开始按钮 - 放在更显眼的位置
+        btn_frame = tk.Frame(self.window, bg="#1a1a1a")
+        btn_frame.pack(pady=10)
+        
+        self.start_btn = tk.Button(btn_frame, text="🎮 开始游戏", command=self.start_game, 
+                                   font=("Arial", 14, "bold"), bg="#4CAF50", fg="white", 
+                                   width=15, height=1, relief=tk.RAISED, bd=3)
+        self.start_btn.pack()
+        
+        # 操作提示
+        self.tip_label = tk.Label(self.window, text="↑ ↓ ← → 方向键控制 | 吃食物得10分", 
+                                 font=("Arial", 9), bg="#1a1a1a", fg="#888888")
+        self.tip_label.pack(pady=(0, 5))
         
         self.window.mainloop()
     
@@ -103,7 +112,7 @@ class SnakeGame:
         """开始游戏"""
         if not self.game_running:
             self.game_running = True
-            self.start_btn.config(text="游戏中...", state=tk.DISABLED)
+            self.start_btn.config(text="游戏中... 点击重新开始", bg="#FF9800")
             self.game_loop()
     
     def move(self):
@@ -161,7 +170,7 @@ class SnakeGame:
         self.canvas.create_text(self.CANVAS_SIZE/2, self.CANVAS_SIZE/2, 
                                text=f"游戏结束!\n最终得分: {self.score}", 
                                fill="white", font=("Arial", 20, "bold"))
-        self.start_btn.config(text="重新开始", state=tk.NORMAL)
+        self.start_btn.config(text="🔄 重新开始", state=tk.NORMAL, bg="#4CAF50")
         
         # 重置游戏
         self.snake = [(10, 10), (9, 10), (8, 10)]
